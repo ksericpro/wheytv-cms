@@ -1,0 +1,65 @@
+CRUD in Elasticsearch
+http://joelabrahamsson.com/elasticsearch-101/
+
+1. Create
+curl -XPUT "http://localhost:9200/movies/movie/1" -d'
+{
+    "title": "The Godfather",
+    "director": "Francis Ford Coppola",
+    "year": 1972,
+    "genres": ["Crime", "Drama"]
+}'
+
+2.Retrieve
+curl -XGET "http://localhost:9200/movies/movie/1" -d ''
+
+3.Delete
+curl -XDELETE "http://localhost:9200/movies/movie/1" -d ''
+
+4. Search
+a) basic
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "query_string": {
+            "query": "kill"
+        }
+    }
+}'
+
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "query_string": {
+            "query": "ford",
+            "fields": ["title"]
+        }
+    }
+}'
+
+b) filter
+curl -XPOST "http://localhost:9200/_search" -d'
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "query_string": {
+                    "query": "drama"
+                }
+            },
+            "filter": {
+                "term": { "year": 1962 }
+            }
+        }
+    }
+}'
+
+5. Install PHP curl and curl for fpm
+apt-get install curl php5.6-curl
+
+6. Tutorial PHP to access ES
+https://www.sitepoint.com/introduction-to-elasticsearch-in-php/
+
+7. Setup PHP project with composer
+curl -s http://getcomposer.org/installer | php
+php composer.phar install --no-dev

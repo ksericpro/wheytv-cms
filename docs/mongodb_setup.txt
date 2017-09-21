@@ -1,0 +1,76 @@
+1. list all database
+db.getMongo().getDBNames();
+
+2. Use db
+db.dropDatabase();
+
+3. Use wheytv
+
+4. root user
+superuser/ultraman
+
+5. create user
+use wheytv;
+db.createUser(
+  {
+    user: "eric",
+    pwd: "12345",
+    roles: [ { role: "userAdmin", db: "wheytv" },
+			{ role: "dbAdmin", db: "wheytv" },
+			{ role: "readWrite", db: "wheytv" },
+             { role: "read", db: "wheytv" },
+			 { role: "dbOwner", db: "wheytv" }
+	]
+  }
+)
+
+db.changeUserPassword("eric", "Sks*90308495");
+
+6. remove user
+db.dropUser('accountUser');
+
+7. Add super user
+use admin;
+db.createUser(
+    {
+      user: "sa",
+      pwd: "ultraman",
+      roles: [ "root" ]
+    }
+)
+
+8. Enable Authorization in /etc/mongod.conf
+Security:
+	Authorisation: enabled
+	
+systemLog:
+    destination: file
+    path: c:\data\log\mongod.log
+storage:
+    dbPath: c:\data\db
+	
+9. Connect to a authorisation enable mongod
+
+mongo --port 27017 -u "sa" -p "ultraman" --authenticationDatabase "admin"
+
+10. http://52.32.189.15/rockmongo
+
+login as sa/ultraman
+
+login as eric/"Sks*90308495"/wheytv
+
+11. Setup Mongo PHP in ubuntu
+
+https://sonnguyen.ws/install-mongodb-mongo-php-in-ubuntu/
+
+12. Export/Backup Database
+
+mongodump --username eric --password Sks*90308495 -d wheytv -o wheytv.dump
+or
+mongoexport --db wheytv --collection (Collection Name) --out (File name).json
+
+13. Import/Restore Database
+
+mongorestore --username sa --password ultraman wheytv.dump/
+or
+mongoimport --username eric --password Sks*90308495 --collection (Colection Name) --file *File name).json
